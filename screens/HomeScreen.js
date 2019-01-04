@@ -1,43 +1,25 @@
 import React from 'react'
-import { Image, ScrollView, StyleSheet, View } from 'react-native'
-import { Header, Left, Right, Body, Text } from 'native-base'
+import { StyleSheet } from 'react-native'
+import {
+  Container,
+  Header,
+  Body,
+  Left,
+  Right,
+  Button,
+  Content,
+  Text,
+  Icon,
+  Title,
+  Spinner,
+} from 'native-base'
+
+import ComicsList from '../components/ComicsList'
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
+    backgroundColor: '#F1F1F1',
     paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
   },
 })
 
@@ -46,37 +28,60 @@ export default class HomeScreen extends React.Component {
     header: null,
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state = { comics: null, hasError: null, fetching: true }
+    this.refetchData = this.refetchData.bind(this)
+  }
+
+  componentDidMount() {
+    this.refetchData()
+  }
+
+  async refetchData() {
+    this.setState({ comics: null, fetching: true })
+    try {
+      const response = await fetch('http://gcomics.nerfthis.xyz/api/v1/comics')
+      const { data } = await response.json()
+
+      this.setState({ comics: data, fetching: false })
+    } catch (error) {
+      this.setState({ hasError: true, fetching: false })
+    }
+  }
+
   render() {
+    const { comics, hasError, fetching } = this.state
+
     return (
-      <View style={styles.container}>
+      <Container style={styles.container}>
         <Header>
           <Left>
-            <Text>Left</Text>
+            <Button transparent>
+              <Icon name="menu" />
+            </Button>
           </Left>
           <Body>
-            <Text>Some header!</Text>
+            <Title>New Comics</Title>
           </Body>
           <Right>
-            <Text>Right</Text>
+            <Button transparent onPress={this.refetchData}>
+              <Icon name="refresh" />
+            </Button>
           </Right>
         </Header>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-            <Text>Hello App!</Text>
-          </View>
-        </ScrollView>
-      </View>
+        <Content>
+          {fetching ? (
+            <Spinner />
+          ) : (
+            <>
+              {hasError && <Text>Error! Oh noe!</Text>}
+              {!!comics && <ComicsList comics={comics} />}
+            </>
+          )}
+        </Content>
+      </Container>
     )
   }
 }

@@ -1,6 +1,7 @@
 {
   "extends": ["airbnb", "prettier", "prettier/react"],
   "rules": {
+    "camelcase": "off",
     "jsx-a11y/accessible-emoji": false,
     "react/jsx-filename-extension": [
       1,
