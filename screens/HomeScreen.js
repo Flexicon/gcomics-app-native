@@ -1,5 +1,6 @@
 import React from 'react'
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, View } from 'react-native'
+import { Header, Left, Right, Body, Text } from 'native-base'
 
 const styles = StyleSheet.create({
   container: {
@@ -48,6 +49,17 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Header>
+          <Left>
+            <Text>Left</Text>
+          </Left>
+          <Body>
+            <Text>Some header!</Text>
+          </Body>
+          <Right>
+            <Text>Right</Text>
+          </Right>
+        </Header>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -61,7 +73,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Hello App!</Text>
+            <Text>Hello App!</Text>
           </View>
         </ScrollView>
       </View>
