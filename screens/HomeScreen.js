@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
+import styled from 'styled-components/native'
 import {
   Container,
   Header,
@@ -8,20 +8,24 @@ import {
   Right,
   Button,
   Content,
-  Text,
   Icon,
   Title,
   Spinner,
+  Text,
+  Toast,
 } from 'native-base'
 
 import ComicsList from '../components/ComicsList'
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#F1F1F1',
-    paddingTop: 30,
-  },
-})
+const Wrap = styled(Container)`
+  background-color: #f1f1f1;
+`
+
+const ErrorMsg = styled(Text)`
+  color: #888;
+  padding-top: 30;
+  text-align: center;
+`
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -40,7 +44,7 @@ export default class HomeScreen extends React.Component {
   }
 
   async refetchData() {
-    this.setState({ comics: null, fetching: true })
+    this.setState({ comics: null, hasError: false, fetching: true })
     try {
       const response = await fetch('http://gcomics.nerfthis.xyz/api/v1/comics')
       const { data } = await response.json()
@@ -48,6 +52,10 @@ export default class HomeScreen extends React.Component {
       this.setState({ comics: data, fetching: false })
     } catch (error) {
       this.setState({ hasError: true, fetching: false })
+      Toast.show({
+        text: error.message,
+        duration: 2000,
+      })
     }
   }
 
@@ -55,7 +63,7 @@ export default class HomeScreen extends React.Component {
     const { comics, hasError, fetching } = this.state
 
     return (
-      <Container style={styles.container}>
+      <Wrap>
         <Header>
           <Left>
             <Button transparent>
@@ -76,12 +84,12 @@ export default class HomeScreen extends React.Component {
             <Spinner />
           ) : (
             <>
-              {hasError && <Text>Error! Oh noe!</Text>}
+              {hasError && <ErrorMsg>Fetching comics failed, please try again.</ErrorMsg>}
               {!!comics && <ComicsList comics={comics} />}
             </>
           )}
         </Content>
-      </Container>
+      </Wrap>
     )
   }
 }
