@@ -1,15 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, View } from 'react-native'
 import { AppLoading, Asset, Font, Icon } from 'expo'
+import { Root } from 'native-base'
 import AppNavigator from './navigation/AppNavigator'
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-})
 
 class App extends React.Component {
   state = {
@@ -54,9 +47,9 @@ class App extends React.Component {
       )
     }
     return (
-      <View style={styles.container}>
+      <Root>
         <AppNavigator />
-      </View>
+      </Root>
     )
   }
 }

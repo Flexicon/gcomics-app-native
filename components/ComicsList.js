@@ -1,18 +1,17 @@
 import React from 'react'
-import { FlatList, StyleSheet } from 'react-native'
+import styled from 'styled-components/native'
+
 import ComicCard from './ComicCard'
 
-const styles = StyleSheet.create({
-  list: {
-    paddingHorizontal: 10,
-  },
-})
+const StyledFlatList = styled.FlatList`
+  padding-horizontal: 5;
+`
 
 const renderItem = ({ item }) => <ComicCard comic={item} />
 const keyExtractor = ({ id }) => `${id}`
 
 const ComicsList = ({ comics }) => (
-  <FlatList style={styles.list} data={comics} renderItem={renderItem} keyExtractor={keyExtractor} />
+  <StyledFlatList data={comics} renderItem={renderItem} keyExtractor={keyExtractor} />
 )
 
 export default ComicsList
