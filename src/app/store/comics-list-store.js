@@ -42,12 +42,8 @@ class ComicsListStore {
 
   @action.bound
   async fetchComics() {
-    console.log('fetchComics action')
     this.resetState()
     try {
-      const usersRes1 = await fetch('https://jsonplaceholder.typicode.com/users')
-      const usersRes2 = await fetch('https://jsonplaceholder.typicode.com/users')
-      const usersRes3 = await fetch('https://jsonplaceholder.typicode.com/users')
       const response = await fetch('http://gcomics.nerfthis.xyz/api/v1/comics')
       const { data } = await response.json()
 
