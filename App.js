@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { AppLoading, Asset, Font, Icon } from 'expo'
 import { Root } from 'native-base'
-import AppNavigator from './navigation/AppNavigator'
+import AppNavigator from './src/app/navigation/AppNavigator'
 
 class App extends React.Component {
   state = {
@@ -12,8 +12,8 @@ class App extends React.Component {
   loadResourcesAsync = async () =>
     Promise.all([
       Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
+        require('./src/assets/images/robot-dev.png'),
+        require('./src/assets/images/robot-prod.png'),
       ]),
       Font.loadAsync({
         ...Icon.Ionicons.font,
