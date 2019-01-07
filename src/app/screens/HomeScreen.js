@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
+import { inject, observer } from 'mobx-react'
 import {
   Container,
   Header,
@@ -12,12 +13,12 @@ import {
   Title,
   Spinner,
   Text,
-  Toast,
 } from 'native-base'
+import { RefreshControl } from 'react-native'
 
 import ComicsList from '../components/ComicsList'
 
-const Wrap = styled(Container)`
+const ContainerStyled = styled(Container)`
   background-color: #f1f1f1;
 `
 
@@ -27,43 +28,28 @@ const ErrorMsg = styled(Text)`
   text-align: center;
 `
 
-export default class HomeScreen extends React.Component {
+@inject(['comicsListStore'])
+@observer
+class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   }
 
-  constructor(props) {
-    super(props)
-
-    this.state = { comics: null, hasError: null, fetching: true }
-    this.refetchData = this.refetchData.bind(this)
-  }
-
   componentDidMount() {
-    this.refetchData()
+    this.fetchData()
   }
 
-  async refetchData() {
-    this.setState({ comics: null, hasError: false, fetching: true })
-    try {
-      const response = await fetch('http://gcomics.nerfthis.xyz/api/v1/comics')
-      const { data } = await response.json()
-
-      this.setState({ comics: data, fetching: false })
-    } catch (error) {
-      this.setState({ hasError: true, fetching: false })
-      Toast.show({
-        text: error.message,
-        duration: 2000,
-      })
-    }
+  fetchData = () => {
+    const { comicsListStore } = this.props
+    comicsListStore.fetchComics()
   }
 
   render() {
-    const { comics, hasError, fetching } = this.state
+    const { comicsListStore } = this.props
+    const { comics, hasError, fetching } = comicsListStore
 
     return (
-      <Wrap>
+      <ContainerStyled>
         <Header>
           <Left>
             <Button transparent>
@@ -74,22 +60,20 @@ export default class HomeScreen extends React.Component {
             <Title>New Comics</Title>
           </Body>
           <Right>
-            <Button transparent onPress={this.refetchData}>
-              <Icon name="refresh" />
+            <Button transparent>
+              <Icon name="search" />
             </Button>
           </Right>
         </Header>
-        <Content>
-          {fetching ? (
-            <Spinner />
-          ) : (
-            <>
-              {hasError && <ErrorMsg>Fetching comics failed, please try again.</ErrorMsg>}
-              {!!comics && <ComicsList comics={comics} />}
-            </>
-          )}
+        <Content
+          refreshControl={<RefreshControl refreshing={fetching} onRefresh={this.fetchData} />}
+        >
+          {hasError && <ErrorMsg>Fetching comics failed, please try again.</ErrorMsg>}
+          <ComicsList comics={comics} />
         </Content>
-      </Wrap>
+      </ContainerStyled>
     )
   }
 }
+
+export default HomeScreen
