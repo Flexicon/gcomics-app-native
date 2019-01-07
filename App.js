@@ -1,8 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Provider } from 'mobx-react'
 import { AppLoading, Asset, Font, Icon } from 'expo'
 import { Root } from 'native-base'
+
 import AppNavigator from './src/app/navigation/AppNavigator'
+import comicsListStore from './src/app/store/comics-list-store'
 
 class App extends React.Component {
   state = {
@@ -48,7 +51,9 @@ class App extends React.Component {
     }
     return (
       <Root>
-        <AppNavigator />
+        <Provider comicsListStore={comicsListStore}>
+          <AppNavigator />
+        </Provider>
       </Root>
     )
   }
