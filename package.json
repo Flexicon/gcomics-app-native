@@ -16,6 +16,8 @@
     "@expo/samples": "2.1.1",
     "@expo/vector-icons": "^8.1.0",
     "expo": "^31.0.2",
+    "mobx": "^5.8.0",
+    "mobx-react": "^5.4.3",
     "native-base": "^2.10.0",
     "prop-types": "^15.6.2",
     "react": "16.5.0",
