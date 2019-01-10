@@ -1,25 +1,29 @@
 import React from 'react'
+import styled from 'styled-components'
 import { Image } from 'react-native'
 import { Card, CardItem, Body, Text } from 'native-base'
 
-const textLimit = 140
+const CardStyled = styled(Card)`
+  margin-top: 8;
+`
 
-const ComicCard = ({ comic: { title, excerpt, image_url } }) => (
-  <Card>
+const ComicCard = ({ comic: { title, date, excerpt, image_url } }) => (
+  <CardStyled>
     <CardItem header>
-      <Text>{title}</Text>
+      <Body>
+        <Text style={{ fontWeight: 'bold' }}>{title}</Text>
+        <Text note>{date}</Text>
+      </Body>
     </CardItem>
     <CardItem cardBody>
       <Image source={{ uri: image_url }} style={{ height: 200, width: null, flex: 1 }} />
     </CardItem>
     <CardItem>
       <Body>
-        <Text>
-          {excerpt.length > textLimit ? `${excerpt.substring(0, textLimit).trim()}...` : excerpt}
-        </Text>
+        <Text numberOfLines={3}>{excerpt}</Text>
       </Body>
     </CardItem>
-  </Card>
+  </CardStyled>
 )
 
 export default ComicCard

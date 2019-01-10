@@ -1,7 +1,7 @@
-import { observable, action } from 'mobx'
+import { observable, action, runInAction } from 'mobx'
 import { Toast } from 'native-base'
 
-class ComicsListStore {
+class ComicsStore {
   @observable comics = []
 
   @observable fetching = null
@@ -19,8 +19,7 @@ class ComicsListStore {
   }
 
   @action
-  resetState = () => {
-    this.comics = []
+  resetFlags = () => {
     this.hasError = null
     this.fetching = true
   }
@@ -40,26 +39,33 @@ class ComicsListStore {
     this.hasError = hasError
   }
 
-  @action.bound
-  async fetchComics() {
-    this.resetState()
+  @action
+  fetchComics = async () => {
+    this.resetFlags()
     try {
       const response = await fetch('http://gcomics.nerfthis.xyz/api/v1/comics')
       const { data } = await response.json()
 
-      this.addComics(data)
-      this.stopFetching()
+      runInAction(() => {
+        this.comics = data
+        this.fetching = false
+      })
     } catch (error) {
-      this.setError(true)
-      this.stopFetching()
+      runInAction(() => {
+        this.hasError = true
+        this.fetching = false
+      })
 
       Toast.show({
         text: error.message,
         duration: 2000,
+        type: 'danger',
       })
     }
   }
+
+  selectComicById = id => this.comics.find(c => c.id === id)
 }
 
-const comicsListStore = new ComicsListStore()
-export default comicsListStore
+const comicsStore = new ComicsStore()
+export default comicsStore

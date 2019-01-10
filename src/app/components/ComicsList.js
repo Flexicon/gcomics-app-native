@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import ComicCard from './ComicCard'
 
 const StyledFlatList = styled.FlatList`
-  padding-horizontal: 5;
+  padding-horizontal: 8;
 `
 
 const renderItem = ({ item }) => <ComicCard comic={item} />

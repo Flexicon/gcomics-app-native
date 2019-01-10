@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Provider } from 'mobx-react'
-import { AppLoading, Asset, Font, Icon } from 'expo'
+import { AppLoading, Asset, Font } from 'expo'
 import { Root } from 'native-base'
 
 import AppNavigator from './src/app/navigation/AppNavigator'
-import comicsListStore from './src/app/store/comics-list-store'
+import comicsStore from './src/app/store/comics-store'
 
 class App extends React.Component {
   state = {
@@ -17,9 +17,9 @@ class App extends React.Component {
       Asset.loadAsync([
         require('./src/assets/images/robot-dev.png'),
         require('./src/assets/images/robot-prod.png'),
+        require('./src/assets/images/qbkls.png'),
       ]),
       Font.loadAsync({
-        ...Icon.Ionicons.font,
         Roboto: require('native-base/Fonts/Roboto.ttf'),
         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
       }),
@@ -51,7 +51,7 @@ class App extends React.Component {
     }
     return (
       <Root>
-        <Provider comicsListStore={comicsListStore}>
+        <Provider comicsStore={comicsStore}>
           <AppNavigator />
         </Provider>
       </Root>

@@ -1,26 +1,11 @@
 import React from 'react'
 import styled from 'styled-components/native'
 import { inject, observer } from 'mobx-react'
-import {
-  Container,
-  Header,
-  Body,
-  Left,
-  Right,
-  Button,
-  Content,
-  Icon,
-  Title,
-  Spinner,
-  Text,
-} from 'native-base'
+import { Header, Body, Left, Right, Button, Content, Icon, Title, Text } from 'native-base'
 import { RefreshControl } from 'react-native'
 
 import ComicsList from '../components/ComicsList'
-
-const ContainerStyled = styled(Container)`
-  background-color: #f1f1f1;
-`
+import ContainerWithBg from '../components/ContainerWithBg'
 
 const ErrorMsg = styled(Text)`
   color: #888;
@@ -28,7 +13,7 @@ const ErrorMsg = styled(Text)`
   text-align: center;
 `
 
-@inject(['comicsListStore'])
+@inject(['comicsStore'])
 @observer
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -40,16 +25,16 @@ class HomeScreen extends React.Component {
   }
 
   fetchData = () => {
-    const { comicsListStore } = this.props
-    comicsListStore.fetchComics()
+    const { comicsStore } = this.props
+    comicsStore.fetchComics()
   }
 
   render() {
-    const { comicsListStore } = this.props
-    const { comics, hasError, fetching } = comicsListStore
+    const { comicsStore } = this.props
+    const { comics, hasError, fetching } = comicsStore
 
     return (
-      <ContainerStyled>
+      <ContainerWithBg>
         <Header>
           <Left>
             <Button transparent>
@@ -71,7 +56,7 @@ class HomeScreen extends React.Component {
           {hasError && <ErrorMsg>Fetching comics failed, please try again.</ErrorMsg>}
           <ComicsList comics={comics} />
         </Content>
-      </ContainerStyled>
+      </ContainerWithBg>
     )
   }
 }
