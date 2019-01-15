@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/native'
 import { Image } from 'react-native'
 import { Card, CardItem, Body, Text } from 'native-base'
 
@@ -7,7 +7,14 @@ const CardStyled = styled(Card)`
   margin-top: 8;
 `
 
-const ComicCard = ({ comic: { title, date, excerpt, image_url } }) => (
+const ComicImage = styled(Image)`
+  height: 200;
+  flex: 1;
+  border-color: #aaa;
+  border-width: 1;
+`
+
+const ComicCard = ({ comic: { title, date, image_url } }) => (
   <CardStyled>
     <CardItem header>
       <Body>
@@ -16,12 +23,7 @@ const ComicCard = ({ comic: { title, date, excerpt, image_url } }) => (
       </Body>
     </CardItem>
     <CardItem cardBody>
-      <Image source={{ uri: image_url }} style={{ height: 200, width: null, flex: 1 }} />
-    </CardItem>
-    <CardItem>
-      <Body>
-        <Text numberOfLines={3}>{excerpt}</Text>
-      </Body>
+      <ComicImage source={{ uri: image_url }} />
     </CardItem>
   </CardStyled>
 )
