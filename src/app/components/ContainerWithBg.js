@@ -4,7 +4,7 @@ import { ImageBackground } from 'react-native'
 import { Container } from 'native-base'
 
 const ContainerStyled = styled(Container)`
-  background: transparent;
+  background: rgba(0, 0, 255, 0.1);
 `
 
 const ContainerWithBg = ({ children }) => (

@@ -6,6 +6,10 @@ import { Root } from 'native-base'
 
 import AppNavigator from './src/app/navigation/AppNavigator'
 import comicsStore from './src/app/store/comics-store'
+import NavigationService from './src/app/navigation/NavigationService'
+
+// Persist the navigation state tree when in DEV mode
+const navigationPersistenceKey = __DEV__ ? 'NavigationStateDEV' : null
 
 class App extends React.Component {
   state = {
@@ -52,7 +56,12 @@ class App extends React.Component {
     return (
       <Root>
         <Provider comicsStore={comicsStore}>
-          <AppNavigator />
+          <AppNavigator
+            ref={navigatorRef => {
+              NavigationService.setTopLevelNavigator(navigatorRef)
+            }}
+            persistenceKey={navigationPersistenceKey}
+          />
         </Provider>
       </Root>
     )

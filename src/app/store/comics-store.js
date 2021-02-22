@@ -9,16 +9,6 @@ class ComicsStore {
   @observable hasError = null
 
   @action
-  addComic = comic => {
-    this.comics.push(comic)
-  }
-
-  @action
-  addComics = comics => {
-    this.comics.push(...comics)
-  }
-
-  @action
   resetFlags = () => {
     this.hasError = null
     this.fetching = true
